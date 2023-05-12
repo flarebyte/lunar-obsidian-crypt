@@ -43,6 +43,7 @@
     "spec": "node --loader ts-node/esm .baldrick-zest.ts"
   },
   "dependencies": {
+    "paseto": "^3.1.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {
