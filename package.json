@@ -1,0 +1,54 @@
+{
+  "name": "lunar-obsidian-crypt",
+  "description": "The easiest way to encrypt your data with TypeScript on the server side",
+  "version": "0.1.0",
+  "author": {
+    "name": "Olivier Huin",
+    "url": "https://github.com/olih"
+  },
+  "keywords": [
+    "todo"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/flarebyte/lunar-obsidian-crypt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flarebyte/lunar-obsidian-crypt.git"
+  },
+  "bugs": "https://github.com/flarebyte/lunar-obsidian-crypt/issues",
+  "type": "module",
+  "types": "./dist/src/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.mjs",
+      "default": "./dist/src/index.mjs",
+      "types": "./dist/src"
+    },
+    "./package.json": {
+      "default": "./package.json"
+    }
+  },
+  "main": "./dist/src/index.mjs",
+  "files": [
+    "dist/src",
+    "src"
+  ],
+  "bin": {},
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc --outDir dist",
+    "test": "node --test --loader ts-node/esm test/*.test.ts",
+    "spec": "node --loader ts-node/esm .baldrick-zest.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "baldrick-zest-engine": "^0.9.0",
+    "baldrick-zest-mess": "^0.17.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "xo": "^0.54.2"
+  },
+  "peerDependencies": {}
+}
