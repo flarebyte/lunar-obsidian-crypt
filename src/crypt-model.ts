@@ -2,7 +2,6 @@ import {describeEnum, stringEffectFields, stringFields} from 'faora-kai';
 import {z} from 'zod';
 
 const cypherTypes = {
-  alligator: 'Alligator',
   gecko: 'Gecko',
   iguana: 'Iguana',
   komodo: 'Komodo Dragon',
