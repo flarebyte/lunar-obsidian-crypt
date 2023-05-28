@@ -1,4 +1,3 @@
-import {V4} from 'paseto';
 import {type CryptModel} from './crypt-model.js';
 import {type Result} from './railway.js';
 
