@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { stringy } from './field-validation.js';
+import {stringEffectFields, stringFields} from 'faora-kai';
+import {z} from 'zod';
 
 const signCypher = z.object({
   a: z.literal('sign'),
-  title: stringy.title,
+  title: stringEffectFields.string1To50Line,
   engine: z.enum(['paseto/v4/sign']),
 });
 
@@ -11,8 +11,8 @@ const cypher = z.discriminatedUnion('a', [signCypher]);
 
 const schema = z
   .object({
-    title: stringy.title,
-    cyphers: z.record(stringy.customKey, cypher),
+    title: stringEffectFields.string1To50Line,
+    cyphers: z.record(stringFields.stringKeyName, cypher),
   })
   .strict()
   .describe('A list of cyphers');

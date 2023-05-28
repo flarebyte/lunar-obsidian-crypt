@@ -1127,6 +1127,11 @@ execa@^5.1.1:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
+faora-kai@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/faora-kai/-/faora-kai-0.1.0.tgz#220a76d18092a56cd5848ac1471e5e8dda023c23"
+  integrity sha512-itUB2t5Ls289meLve1uQqwPYC+PwczFDoMe93G8EUEZcS0VQG+Xn94W+SZd/jiO6jFDZX9EnAqV9O6XSoc3WOw==
+
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"

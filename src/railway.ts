@@ -1,18 +1,18 @@
-interface Success<a> {
+type Success<A> = {
   status: 'success';
-  value: a;
-}
-interface Failure<e> {
+  value: A;
+};
+type Failure<E> = {
   status: 'failure';
-  error: e;
-}
+  error: E;
+};
 
-export type Result<a, e> = Success<a> | Failure<e>;
+export type Result<A, E> = Success<A> | Failure<E>;
 
 /**
  * Return a successful response
  */
-export const succeed = <a>(a: a): Success<a> => ({
+export const succeed = <A>(a: A): Success<A> => ({
   status: 'success',
   value: a,
 });
@@ -20,21 +20,7 @@ export const succeed = <a>(a: a): Success<a> => ({
 /**
  * Return a failure result
  */
-export const fail = <e>(e: e): Failure<e> => ({ status: 'failure', error: e });
-
-export const withDefault =
-  <a, e>(defaultValue: a) =>
-  (result: Result<a, e>): a =>
-    result.status === 'success' ? result.value : defaultValue;
-
-export const map1 =
-  <a, b, e>(func: (value: a) => b) =>
-  (result: Result<a, e>): Result<b, e> => {
-    return result.status === 'success' ? succeed(func(result.value)) : result;
-  };
-
-export const andThen =
-  <a, b, e>(func: (value: a) => Result<b, e>) =>
-  (result: Result<a, e>): Result<b, e> => {
-    return result.status === 'success' ? func(result.value) : result;
-  };
+export const willFail = <E>(e: E): Failure<E> => ({
+  status: 'failure',
+  error: e,
+});

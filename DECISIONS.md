@@ -119,13 +119,10 @@ they can be carried-on or re-visited in the future.
 What we want to be able to do:
 
 -   Adds a digital signature to an ID
--   The payload should contain
-
-<!---->
-
--   an ID
--   user scope that should be verified
--   an expiration time (seconds to months)
+-   The payload should contain:
+    -   an ID
+    -   user scope that should be verified
+    -   an expiration time (seconds to months)
 
 Possible scope, but not restricted:
 
@@ -144,4 +141,4 @@ potentially be used for scope.
 We should assume a minimum and maximum size for each key.
 This way the expected resulting string size can be anticipated.
 
-Resulting string: prefix:code
+Resulting string: `prefix:code`
