@@ -1,42 +1,66 @@
 import {describeEnum, stringEffectFields, stringFields} from 'faora-kai';
 import {z} from 'zod';
 
-const cypherTypes = {
-  gecko: 'Gecko',
-  iguana: 'Iguana',
-  komodo: 'Komodo Dragon',
-  turtle: 'Turtle',
-};
-
-const timeUnit = {
+const timeUnit: Record<string, string> = {
   seconds: 'Seconds',
   minutes: 'Minutes',
   hours: 'Hours',
   days: 'Days',
   weeks: 'Weeks',
   months: 'Months',
-  years: 'Years',
 };
+
+const timeUnitKeys = [
+  'seconds',
+  'minutes',
+  'hours',
+  'days',
+  'weeks',
+  'months',
+] as const;
+
+const encryptionStrength = {
+  sufficient: 'Sufficient',
+  good: 'Good',
+  strong: 'Strong',
+};
+
+const encryptionStrengthKeys = ['sufficient', 'good', 'strong'] as const;
+
+const strength = z
+  .enum(encryptionStrengthKeys)
+  .describe(describeEnum('Encryption strength:', encryptionStrength));
 
 const expiration = z.object({
   value: z.number().min(1).max(1_000_000).int(),
-  unit: z
-    .enum(Object.keys(timeUnit))
-    .describe(describeEnum('Time unit: ', timeUnit)),
+  unit: z.enum(timeUnitKeys).describe(describeEnum('Time unit: ', timeUnit)),
 });
 
-const signCypher = z.object({
-  a: z.literal('sign'),
+const lizardCypher = z.object({
+  kind: z.literal('lizard').describe('Lizard 🦎'),
   title: stringEffectFields.string1To50Line,
-  privateKey: stringFields.string1To600,
-  publicKey: stringFields.string1To600.optional(),
+  secret: z.instanceof(Uint8Array),
+  strength,
   expiration,
-  engine: z
-    .enum(Object.keys(cypherTypes))
-    .describe(describeEnum('Cypher engine:', cypherTypes)),
 });
 
-const cypher = z.discriminatedUnion('a', [signCypher]);
+const crocodileCypher = z.object({
+  kind: z.literal('crocodile').describe('Crocodile 🐊'),
+  title: stringEffectFields.string1To50Line,
+  expiration,
+});
+
+const turtleCypher = z.object({
+  kind: z.literal('turtle').describe('Turtle 🐢'),
+  title: stringEffectFields.string1To50Line,
+  expiration,
+});
+
+const cypher = z.discriminatedUnion('kind', [
+  lizardCypher,
+  crocodileCypher,
+  turtleCypher,
+]);
 
 const schema = z
   .object({
@@ -47,4 +71,5 @@ const schema = z
   .describe('A list of cyphers');
 
 export type CryptModel = z.infer<typeof schema>;
-export type CryptSignCypher = z.infer<typeof signCypher>;
+export type CryptSignCypher = z.infer<typeof lizardCypher>;
+export type CryptEncryptionStrength = z.infer<typeof strength>;
