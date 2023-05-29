@@ -1,8 +1,8 @@
-import {SignJWT, decodeJwt} from 'jose';
+import {SignJWT} from 'jose';
 import {
   type CryptIdPayload,
   type CryptEncryptionStrength,
-  type CryptSignCypher,
+  type CrypLizardCypher,
 } from './crypt-model.js';
 import {succeed, type Result} from './railway.js';
 
@@ -28,26 +28,16 @@ const strenghtToAlgorithm = (strength: CryptEncryptionStrength) => {
   }
 };
 
-export const lizardSign =
-  (name: string, cryptSignCypher: CryptSignCypher & {kind: 'lizard'}) =>
-  async (value: CryptIdPayload): Promise<SignResult> => {
-    const {secret, expiration, strength} = cryptSignCypher;
-    const realValue = {...value};
-    const jwt = await new SignJWT(realValue)
-      .setProtectedHeader({alg: strenghtToAlgorithm(strength)})
-      .setExpirationTime(`${expiration.value}s`)
-      .sign(secret);
-    return succeed(`${name}:${jwt}`);
-  };
-
-export const lizardVerify =
-  (name: string, cryptSignCypher: CryptSignCypher & {kind: 'lizard'}) =>
-  async (value: {id: string}): Promise<SignResult> => {
-    const {secret, expiration, strength} = cryptSignCypher;
-    const realValue = {...value};
-    const jwt = await new SignJWT(realValue)
-      .setProtectedHeader({alg: strenghtToAlgorithm(strength)})
-      .setExpirationTime(`${expiration.value}s`)
-      .sign(secret);
-    return succeed(`${name}:${jwt}`);
-  };
+export const lizardSign = async (
+  name: string,
+  cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
+  value: CryptIdPayload
+): Promise<SignResult> => {
+  const {secret, expiration, strength} = cryptSignCypher;
+  const realValue = {...value};
+  const jwt = await new SignJWT(realValue)
+    .setProtectedHeader({alg: strenghtToAlgorithm(strength)})
+    .setExpirationTime(`${expiration.value}s`)
+    .sign(secret);
+  return succeed(`${name}:${jwt}`);
+};

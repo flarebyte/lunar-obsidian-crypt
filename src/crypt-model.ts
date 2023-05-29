@@ -84,6 +84,6 @@ const idPayloadSchema = z
   .describe('A list of cyphers');
 
 export type CryptModel = z.infer<typeof schema>;
-export type CryptSignCypher = z.infer<typeof lizardCypher>;
+export type CrypLizardCypher = z.infer<typeof lizardCypher>;
 export type CryptEncryptionStrength = z.infer<typeof strength>;
 export type CryptIdPayload = z.infer<typeof idPayloadSchema>;
