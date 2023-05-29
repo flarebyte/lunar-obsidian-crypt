@@ -3,10 +3,9 @@ import {
   type CryptIdPayload,
   type CryptEncryptionStrength,
   type CrypLizardCypher,
+  type CryptSignResult,
 } from './crypt-model.js';
-import {succeed, type Result} from './railway.js';
-
-type SignResult = Result<string, string>;
+import {succeed} from './railway.js';
 
 const strenghtToAlgorithm = (strength: CryptEncryptionStrength) => {
   switch (strength) {
@@ -32,7 +31,7 @@ export const lizardSign = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   value: CryptIdPayload
-): Promise<SignResult> => {
+): Promise<CryptSignResult> => {
   const {secret, expiration, strength} = cryptSignCypher;
   const realValue = {...value};
   const jwt = await new SignJWT(realValue)

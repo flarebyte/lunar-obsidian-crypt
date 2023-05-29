@@ -1,4 +1,4 @@
-import { CryptIdPayload, CryptModel } from "./crypt-model.js";
+import { CryptIdPayload, CryptModel, CryptSignResult } from "./crypt-model.js";
 import { lizardSign } from "./lizard-sign.js";
 import { willFail } from "./railway.js";
 
@@ -9,7 +9,7 @@ export class LunarObsidianCrypt {
         this.store = store;
     }
 
-    public async signId(name: string, payload: CryptIdPayload){
+    public async signId(name: string, payload: CryptIdPayload): Promise<CryptSignResult>{
         const cypher = this.store.cyphers[name];
         if (cypher === undefined){
             return willFail(`Not supported cypher ${name}`)
