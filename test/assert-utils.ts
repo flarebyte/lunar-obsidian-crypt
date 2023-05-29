@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {boolean} from 'zod';
 import {type Result} from '../src/railway.js';
 
 type AssertOpts = {

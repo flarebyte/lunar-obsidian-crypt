@@ -1,20 +1,23 @@
-import {type CrypLizardCypher, type CryptModel} from './crypt-model.js';
+import {
+  type CrypLizardCypher,
+  type LunarObsidianStoreModel,
+} from './crypt-model.js';
 
-export class CryptModelBuilder {
+export class LunarObsidianStoreBuilder<K extends string> {
   private title = 'Not title yet';
-  private cyphers: CryptModel['cyphers'] = {};
+  private cyphers: LunarObsidianStoreModel['cyphers'] = {};
 
   public setTitle(title: string): this {
     this.title = title;
     return this;
   }
 
-  public addLizard(name: string, opts: CrypLizardCypher): this {
+  public addLizard(name: K, opts: CrypLizardCypher): this {
     this.cyphers[name] = opts;
     return this;
   }
 
-  public build(): CryptModel {
+  public build(): LunarObsidianStoreModel {
     return {title: this.title, cyphers: this.cyphers};
   }
 }

@@ -1,15 +1,16 @@
-import { CryptIdPayload, CryptModel, CryptSignResult } from "./crypt-model.js";
+import { LunarObsidianStoreBuilder } from "./crypt-builder.js";
+import { CryptIdPayload, LunarObsidianStoreModel, CryptSignResult } from "./crypt-model.js";
 import { lizardSign } from "./lizard-sign.js";
 import { willFail } from "./railway.js";
 
-export class LunarObsidianCrypt {
-    private store: CryptModel = { title: 'No title yet', cyphers: {}};
+export class LunarObsidianCrypt<K extends string> {
+    private store: LunarObsidianStoreModel = { title: 'No title yet', cyphers: {}};
     
-    constructor(store: CryptModel){
-        this.store = store;
+    constructor(builder: LunarObsidianStoreBuilder<K>){
+        this.store = builder.build();
     }
 
-    public async signId(name: string, payload: CryptIdPayload): Promise<CryptSignResult>{
+    public async signId(name: K, payload: CryptIdPayload): Promise<CryptSignResult>{
         const cypher = this.store.cyphers[name];
         if (cypher === undefined){
             return willFail(`Not supported cypher ${name}`)
