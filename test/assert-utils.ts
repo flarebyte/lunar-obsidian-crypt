@@ -38,7 +38,11 @@ export function assertSuccessfulResultFormat<A, E>(
     return;
   }
 
-  assert.ok(expectedFunc(actual.value), message);
+  const jsonActual = JSON.stringify(actual.value);
+  assert.ok(
+    expectedFunc(actual.value),
+    `${message}. Actual value is: ${jsonActual}`
+  );
 }
 
 export function assertFailedResult<A, E>(

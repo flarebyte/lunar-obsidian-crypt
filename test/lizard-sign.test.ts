@@ -18,6 +18,27 @@ const lizard = lizardSign('test', {
   },
   strength: 'good',
 });
+const lizardGood = lizardSign('test', {
+  kind: 'lizard',
+  title: 'testing Gecko',
+  secret: encodeSecret('terrible-password'),
+  expiration: {
+    value: 2,
+    unit: 'seconds',
+  },
+  strength: 'good',
+});
+
+const lizardStrong = lizardSign('test', {
+  kind: 'lizard',
+  title: 'testing Gecko',
+  secret: encodeSecret('terrible-password'),
+  expiration: {
+    value: 2,
+    unit: 'seconds',
+  },
+  strength: 'strong',
+});
 
 const looksLikeJwt = (prefix: string) => (value: string) => {
   if (!value.startsWith(prefix)) {
@@ -50,8 +71,26 @@ const looksLikeJwt = (prefix: string) => (value: string) => {
   return true;
 };
 
-test('lizardSign', async () => {
+test('lizard should generate JWT 256', async () => {
   const actual = await lizard({id: 'lunar123'});
+  assertSuccessfulResultFormat(
+    actual,
+    looksLikeJwt('test:'),
+    'Should look like a JWT token'
+  );
+});
+
+test('lizard should generate with good strength', async () => {
+  const actual = await lizardGood({id: 'lunar123'});
+  assertSuccessfulResultFormat(
+    actual,
+    looksLikeJwt('test:'),
+    'Should look like a JWT token'
+  );
+});
+
+test('lizard should generate with strong strength', async () => {
+  const actual = await lizardStrong({id: 'lunar123'});
   assertSuccessfulResultFormat(
     actual,
     looksLikeJwt('test:'),
