@@ -70,6 +70,20 @@ const schema = z
   .strict()
   .describe('A list of cyphers');
 
+const scopeValue = z.union([
+  stringFields.string1To600,
+  z.array(stringFields.string1To600),
+]);
+
+const idPayloadSchema = z
+  .object({
+    id: stringFields.string1To400,
+    scope: z.record(stringFields.stringKeyName, scopeValue).optional(),
+  })
+  .strict()
+  .describe('A list of cyphers');
+
 export type CryptModel = z.infer<typeof schema>;
 export type CryptSignCypher = z.infer<typeof lizardCypher>;
 export type CryptEncryptionStrength = z.infer<typeof strength>;
+export type CryptIdPayload = z.infer<typeof idPayloadSchema>;

@@ -52,7 +52,7 @@ test('lizard should generate JWT 256', async () => {
 });
 
 test('lizard should generate JWT 256 with context', async () => {
-  const actual = await lizard({id: 'lunar123', team: 'red'});
+  const actual = await lizard({id: 'lunar123', scope: {team: 'red'}});
   assertSuccessfulResultFormat(
     actual,
     looksLikeJwt('test:'),
