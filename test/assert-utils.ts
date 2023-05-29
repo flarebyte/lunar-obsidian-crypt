@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {boolean} from 'zod';
 import {type Result} from '../src/railway.js';
 
 type AssertOpts = {
@@ -25,6 +26,19 @@ export function assertSuccessfulResult<A, E>(
   } else if (expected !== actual.value) {
     assert.strictEqual(actual.value, expected);
   }
+}
+
+export function assertSuccessfulResultFormat<A, E>(
+  actual: Result<A, E>,
+  expectedFunc: (value: A) => boolean,
+  message: string
+) {
+  if (actual.status !== 'success') {
+    assert.strictEqual(actual.status, 'success');
+    return;
+  }
+
+  assert.ok(expectedFunc(actual.value), message);
 }
 
 export function assertFailedResult<A, E>(
