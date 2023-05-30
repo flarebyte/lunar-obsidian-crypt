@@ -76,7 +76,7 @@ const scopeValue = z.union([
   z.array(stringFields.string1To600),
 ]);
 
-const idPayloadSchema = z
+export const idPayloadSchema = z
   .object({
     id: stringFields.string1To400,
     scope: z.record(stringFields.stringKeyName, scopeValue).optional(),
@@ -89,3 +89,4 @@ export type CrypLizardCypher = z.infer<typeof lizardCypher>;
 export type CryptEncryptionStrength = z.infer<typeof strength>;
 export type CryptIdPayload = z.infer<typeof idPayloadSchema>;
 export type CryptSignResult = Result<string, string>;
+export type CryptVerifyResult = Result<CryptIdPayload, string>;
