@@ -66,7 +66,7 @@ export const lizardVerify = async (
   _cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
 ): Promise<CryptVerifyResult> => {
-  // const {secret, strength} = cryptSignCypher;
+  // Const {secret, strength} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
     return willFail(tokenResult.error);
