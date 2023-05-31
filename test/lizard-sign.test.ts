@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import {test} from 'node:test';
+import {type CryptIdPayload} from '../src/crypt-model.js';
 import {
   assertSuccessfulResult,
   assertSuccessfulResultFormat,
 } from './assert-utils.js';
 import {looksLikeJwt} from './jwt-utils.js';
-import {lunarCrypt} from './fixture-crypt-store.js';
+import {type FixtureCryptStoreKey, lunarCrypt} from './fixture-crypt-store.js';
 
 const assertOpts = {
   stringify: true,
 };
 
-test('lizard should generate JWT 256', async () => {
-  const payload = {id: 'lunar123'};
-  const name = 'lizard-sufficient';
+const assertSignAndVerify = async (
+  name: FixtureCryptStoreKey,
+  payload: CryptIdPayload
+) => {
   const actual = await lunarCrypt.signId(name, payload);
   assertSuccessfulResultFormat(
     actual,
@@ -25,11 +27,14 @@ test('lizard should generate JWT 256', async () => {
   }
 
   const verifyActual = await lunarCrypt.verifyIdSignature(name, actual.value);
-  if (verifyActual.status === 'failure') {
-    console.log('>>>' + JSON.stringify(verifyActual));
-  }
 
   assertSuccessfulResult(verifyActual, payload, assertOpts);
+};
+
+test('lizard should generate JWT 256', async () => {
+  const payload = {id: 'lunar123'};
+  const name = 'lizard-sufficient';
+  await assertSignAndVerify(name, payload);
 });
 
 test('lizard should generate JWT 256 with context', async () => {

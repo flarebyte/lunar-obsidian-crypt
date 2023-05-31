@@ -1,11 +1,14 @@
 import {LunarObsidianStoreBuilder} from '../src/crypt-builder.js';
 import {LunarObsidianCrypt} from '../src/index.mjs';
 
-type CryptStoreKey = 'lizard-sufficient' | 'lizard-good' | 'lizard-strong';
+export type FixtureCryptStoreKey =
+  | 'lizard-sufficient'
+  | 'lizard-good'
+  | 'lizard-strong';
 
 const encodeSecret = (secret: string): Uint8Array =>
   new TextEncoder().encode(secret);
-const cryptStoreBuilder = new LunarObsidianStoreBuilder<CryptStoreKey>()
+const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
   .setTitle('Test store')
   .addLizard('lizard-sufficient', {
     kind: 'lizard',
@@ -37,6 +40,6 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<CryptStoreKey>()
     },
     strength: 'strong',
   });
-export const lunarCrypt = new LunarObsidianCrypt<CryptStoreKey>(
+export const lunarCrypt = new LunarObsidianCrypt<FixtureCryptStoreKey>(
   cryptStoreBuilder
 );
