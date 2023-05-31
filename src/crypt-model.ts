@@ -1,6 +1,5 @@
 import {describeEnum, stringEffectFields, stringFields} from 'faora-kai';
 import {z} from 'zod';
-import {type Result} from './railway.js';
 
 const timeUnit: Record<string, string> = {
   seconds: 'Seconds',
@@ -98,5 +97,3 @@ export type CrypLizardCypher = z.infer<typeof lizardCypher>;
 export type CryptEncryptionStrength = z.infer<typeof strength>;
 export type CryptIdPayload = z.infer<typeof idPayloadSchema>;
 export type CryptIdPayloadWithExp = z.infer<typeof idPayloadWithExpSchema>;
-export type CryptSignResult = Result<string, string>;
-export type CryptVerifyResult = Result<CryptIdPayload, string>;

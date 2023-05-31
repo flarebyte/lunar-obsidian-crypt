@@ -1,7 +1,7 @@
 import { LunarObsidianStoreBuilder } from "./crypt-builder.js";
-import { CryptIdPayload, LunarObsidianStoreModel, CryptSignResult, CryptVerifyResult } from "./crypt-model.js";
+import { CryptIdPayload, LunarObsidianStoreModel } from "./crypt-model.js";
 import { lizardSign, lizardVerify } from "./lizard-sign.js";
-import { willFail } from "./railway.js";
+import { Result, willFail } from "./railway.js";
 
 export class LunarObsidianCrypt<K extends string> {
     private store: LunarObsidianStoreModel = { title: 'No title yet', cyphers: {}};
@@ -10,7 +10,7 @@ export class LunarObsidianCrypt<K extends string> {
         this.store = builder.build();
     }
 
-    public async signId(name: K, payload: CryptIdPayload): Promise<CryptSignResult>{
+    public async signId(name: K, payload: CryptIdPayload): Promise<Result<string, string>>{
         const cypher = this.store.cyphers[name];
         if (cypher === undefined){
             return willFail(`Not supported cypher ${name}`)
@@ -25,7 +25,7 @@ export class LunarObsidianCrypt<K extends string> {
             }
                 
         }
-        public async verifyIdSignature(name: K, fullToken: string): Promise<CryptVerifyResult>{
+        public async verifyIdSignature(name: K, fullToken: string): Promise<Result<CryptIdPayload, string>>{
             const cypher = this.store.cyphers[name];
             if (cypher === undefined){
                 return willFail(`Not supported cypher ${name}`)

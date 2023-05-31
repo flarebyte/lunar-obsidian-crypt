@@ -4,11 +4,8 @@ import {
   type CryptIdPayload,
   type CryptEncryptionStrength,
   type CrypLizardCypher,
-  type CryptSignResult,
-  type CryptVerifyResult,
   type CryptIdPayloadWithExp,
   idPayloadWithExpSchema,
-  idPayloadSchema,
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
@@ -36,7 +33,7 @@ export const lizardSign = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   value: CryptIdPayload
-): Promise<CryptSignResult> => {
+): Promise<Result<string, string>> => {
   const {secret, expiration, strength} = cryptSignCypher;
   const realValue = {...value};
   const jwt = await new SignJWT(realValue)
@@ -69,12 +66,14 @@ const safeJwtVerify = async (
   payloadWithExp: CryptIdPayloadWithExp
 ): Promise<Result<CryptIdPayloadWithExp, string>> => {
   try {
-    await jwtVerify(token, secret, payloadWithExp);
+    await jwtVerify(token, secret);
     return succeed(payloadWithExp);
   } catch (error) {
     if (error instanceof Error) {
       return willFail('Token could not be verified');
     }
+
+    return willFail('safeJwtVerify failed');
   }
 };
 
@@ -83,7 +82,7 @@ export const lizardVerify = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
-): Promise<CryptVerifyResult> => {
+): Promise<Result<CryptIdPayload, string>> => {
   const {secret} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
