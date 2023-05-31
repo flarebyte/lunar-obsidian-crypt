@@ -25,6 +25,10 @@ test('lizard should generate JWT 256', async () => {
   }
 
   const verifyActual = await lunarCrypt.verifyIdSignature(name, actual.value);
+  if (verifyActual.status === 'failure') {
+    console.log('>>>' + JSON.stringify(verifyActual));
+  }
+
   assertSuccessfulResult(verifyActual, payload, assertOpts);
 });
 

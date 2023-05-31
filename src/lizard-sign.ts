@@ -7,6 +7,8 @@ import {
   type CryptSignResult,
   type CryptVerifyResult,
   idPayloadSchema,
+  type CryptIdPayloadWithExp,
+  idPayloadWithExpSchema,
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
@@ -74,13 +76,13 @@ export const lizardVerify = async (
 
   const token = tokenResult.value;
   const protectedPayload = decodeJwt(token);
-  const parsedResult = safeParse<CryptIdPayload>(protectedPayload, {
-    schema: idPayloadSchema,
+  const parsedResult = safeParse<CryptIdPayloadWithExp>(protectedPayload, {
+    schema: idPayloadWithExpSchema,
     formatting: 'privacy-first',
   });
   if (parsedResult.status === 'failure') {
     return willFail(JSON.stringify(parsedResult.error));
   }
 
-  return succeed(parsedResult.value);
+  return succeed({...parsedResult.value, exp: undefined});
 };

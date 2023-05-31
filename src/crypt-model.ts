@@ -84,9 +84,19 @@ export const idPayloadSchema = z
   .strict()
   .describe('A list of cyphers');
 
+export const idPayloadWithExpSchema = z
+  .object({
+    id: stringFields.string1To400,
+    exp: z.number().positive().safe(),
+    scope: z.record(stringFields.stringKeyName, scopeValue).optional(),
+  })
+  .strict()
+  .describe('A list of cyphers');
+
 export type LunarObsidianStoreModel = z.infer<typeof schema>;
 export type CrypLizardCypher = z.infer<typeof lizardCypher>;
 export type CryptEncryptionStrength = z.infer<typeof strength>;
 export type CryptIdPayload = z.infer<typeof idPayloadSchema>;
+export type CryptIdPayloadWithExp = z.infer<typeof idPayloadWithExpSchema>;
 export type CryptSignResult = Result<string, string>;
 export type CryptVerifyResult = Result<CryptIdPayload, string>;
