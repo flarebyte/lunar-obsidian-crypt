@@ -1,4 +1,4 @@
-import {SignJWT, decodeJwt} from 'jose';
+import {SignJWT, decodeJwt, jwtVerify} from 'jose';
 import {safeParse} from 'faora-kai';
 import {
   type CryptIdPayload,
@@ -6,9 +6,9 @@ import {
   type CrypLizardCypher,
   type CryptSignResult,
   type CryptVerifyResult,
-  idPayloadSchema,
   type CryptIdPayloadWithExp,
   idPayloadWithExpSchema,
+  idPayloadSchema,
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
@@ -63,12 +63,28 @@ const extractToken = (
   return succeed(token);
 };
 
+const safeJwtVerify = async (
+  token: string,
+  secret: Uint8Array,
+  payloadWithExp: CryptIdPayloadWithExp
+): Promise<Result<CryptIdPayloadWithExp, string>> => {
+  try {
+    await jwtVerify(token, secret, payloadWithExp);
+    return succeed(payloadWithExp);
+  } catch (error) {
+    if (error instanceof Error) {
+      return willFail('Token could not be verified');
+    }
+  }
+};
+
+/** Lizard verify */
 export const lizardVerify = async (
   name: string,
-  _cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
+  cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
 ): Promise<CryptVerifyResult> => {
-  // Const {secret, strength} = cryptSignCypher;
+  const {secret} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
     return willFail(tokenResult.error);
@@ -84,5 +100,10 @@ export const lizardVerify = async (
     return willFail(JSON.stringify(parsedResult.error));
   }
 
-  return succeed({...parsedResult.value, exp: undefined});
+  const verifyResult = await safeJwtVerify(token, secret, parsedResult.value);
+  if (verifyResult.status === 'failure') {
+    return willFail(verifyResult.error);
+  }
+
+  return succeed({...verifyResult.value, exp: undefined});
 };

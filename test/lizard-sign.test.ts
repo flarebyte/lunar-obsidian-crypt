@@ -1,34 +1,9 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import {test} from 'node:test';
-import {type CryptIdPayload} from '../src/crypt-model.js';
-import {
-  assertSuccessfulResult,
-  assertSuccessfulResultFormat,
-} from './assert-utils.js';
-import {looksLikeJwt} from './jwt-utils.js';
-import {type FixtureCryptStoreKey, lunarCrypt} from './fixture-crypt-store.js';
+import {assertSignAndVerify} from './assert-crypt.js';
 
-const assertOpts = {
+export const assertOpts = {
   stringify: true,
-};
-
-const assertSignAndVerify = async (
-  name: FixtureCryptStoreKey,
-  payload: CryptIdPayload
-) => {
-  const actual = await lunarCrypt.signId(name, payload);
-  assertSuccessfulResultFormat(
-    actual,
-    looksLikeJwt(`${name}:`),
-    'Should look like a JWT token'
-  );
-  if (actual.status === 'failure') {
-    return;
-  }
-
-  const verifyActual = await lunarCrypt.verifyIdSignature(name, actual.value);
-
-  assertSuccessfulResult(verifyActual, payload, assertOpts);
 };
 
 test('lizard should generate JWT 256', async () => {
@@ -38,31 +13,22 @@ test('lizard should generate JWT 256', async () => {
 });
 
 test('lizard should generate JWT 256 with context', async () => {
-  const actual = await lunarCrypt.signId('lizard-sufficient', {
+  const payload = {
     id: 'lunar123',
     scope: {team: 'red'},
-  });
-  assertSuccessfulResultFormat(
-    actual,
-    looksLikeJwt('lizard-sufficient:'),
-    'Should look like a JWT token'
-  );
+  };
+  const name = 'lizard-sufficient';
+  await assertSignAndVerify(name, payload);
 });
 
 test('lizard should generate with good strength', async () => {
-  const actual = await lunarCrypt.signId('lizard-good', {id: 'lunar123'});
-  assertSuccessfulResultFormat(
-    actual,
-    looksLikeJwt('lizard-good:'),
-    'Should look like a JWT token'
-  );
+  const payload = {id: 'lunar123'};
+  const name = 'lizard-good';
+  await assertSignAndVerify(name, payload);
 });
 
 test('lizard should generate with strong strength', async () => {
-  const actual = await lunarCrypt.signId('lizard-strong', {id: 'lunar123'});
-  assertSuccessfulResultFormat(
-    actual,
-    looksLikeJwt('lizard-strong:'),
-    'Should look like a JWT token'
-  );
+  const payload = {id: 'lunar123'};
+  const name = 'lizard-strong';
+  await assertSignAndVerify(name, payload);
 });
