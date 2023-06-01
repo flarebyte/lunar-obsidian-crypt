@@ -70,7 +70,21 @@ const safeJwtVerify = async (
     return succeed(payloadWithExp);
   } catch (error) {
     if (error instanceof Error) {
-      return willFail('Token could not be verified');
+      switch (error.name) {
+        case 'JWTExpired': {
+          return willFail('The token has expired');
+        }
+
+        case 'JWSSignatureVerificationFailed': {
+          return willFail(
+            'The signature cannot be verified using current secret'
+          );
+        }
+
+        default: {
+          return willFail('Token could not be verified' + error.name);
+        }
+      }
     }
 
     return willFail('safeJwtVerify failed');
