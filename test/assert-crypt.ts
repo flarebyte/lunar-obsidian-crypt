@@ -1,5 +1,4 @@
 import {type CryptIdPayload} from '../src/crypt-model.js';
-import {type Result} from '../src/railway.js';
 import {
   assertSuccessfulResult,
   assertSuccessfulResultFormat,
@@ -12,7 +11,7 @@ export const assertSignAndVerify = async (
   name: FixtureCryptStoreKey,
   payload: CryptIdPayload
 ) => {
-  const actual: Result<string, string> = await lunarCrypt.signId(name, payload);
+  const actual = await lunarCrypt.signId(name, payload);
   assertSuccessfulResultFormat(
     actual,
     looksLikeJwt(`${name}:`),
