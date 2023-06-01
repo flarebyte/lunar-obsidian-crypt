@@ -72,22 +72,26 @@ const safeJwtVerify = async (
     if (error instanceof Error) {
       switch (error.name) {
         case 'JWTExpired': {
-          return willFail('The token has expired');
+          return willFail('The JWT token has expired');
         }
 
         case 'JWSSignatureVerificationFailed': {
           return willFail(
-            'The signature cannot be verified using current secret'
+            'The signature for the JWT token cannot be verified using current secret'
           );
         }
 
         default: {
-          return willFail('Token could not be verified' + error.name);
+          return willFail(
+            `The JWT token could not be verified (${error.name})`
+          );
         }
       }
     }
 
-    return willFail('safeJwtVerify failed');
+    return willFail(
+      'An unexpected error occured during JWT token verification'
+    );
   }
 };
 
