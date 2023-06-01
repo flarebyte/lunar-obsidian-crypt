@@ -125,6 +125,6 @@ export type LunarObsidianCryptError =
 
 export type LunarObsidianStoreModel = z.infer<typeof schema>;
 export type CrypLizardCypher = z.infer<typeof lizardCypher>;
-export type CryptEncryptionStrength = z.infer<typeof strength>;
-export type CryptIdPayload = z.infer<typeof idPayloadSchema>;
+export type LunarObsidianCryptEncryptionStrength = z.infer<typeof strength>;
+export type LunarObsidianCryptIdPayload = z.infer<typeof idPayloadSchema>;
 export type CryptIdPayloadWithExp = z.infer<typeof idPayloadWithExpSchema>;

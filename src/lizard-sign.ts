@@ -1,8 +1,8 @@
 import {SignJWT, decodeJwt, jwtVerify} from 'jose';
 import {safeParse} from 'faora-kai';
 import {
-  type CryptIdPayload,
-  type CryptEncryptionStrength,
+  type LunarObsidianCryptIdPayload,
+  type LunarObsidianCryptEncryptionStrength,
   type CrypLizardCypher,
   type CryptIdPayloadWithExp,
   idPayloadWithExpSchema,
@@ -10,7 +10,7 @@ import {
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
-const strenghtToAlgorithm = (strength: CryptEncryptionStrength) => {
+const strenghtToAlgorithm = (strength: LunarObsidianCryptEncryptionStrength) => {
   switch (strength) {
     case 'sufficient': {
       return 'HS256';
@@ -33,7 +33,7 @@ const strenghtToAlgorithm = (strength: CryptEncryptionStrength) => {
 export const lizardSign = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
-  value: CryptIdPayload
+  value: LunarObsidianCryptIdPayload
 ): Promise<Result<string, LunarObsidianCryptError>> => {
   const {secret, expiration, strength} = cryptSignCypher;
   const realValue = {...value};
@@ -114,7 +114,7 @@ export const lizardVerify = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
-): Promise<Result<CryptIdPayload, LunarObsidianCryptError>> => {
+): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>> => {
   const {secret} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {

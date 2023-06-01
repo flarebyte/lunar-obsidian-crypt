@@ -1,6 +1,6 @@
 import {
   type LunarObsidianCryptError,
-  type CryptIdPayload,
+  type LunarObsidianCryptIdPayload,
 } from '../src/crypt-model.js';
 import {
   assertFailedResult,
@@ -17,7 +17,7 @@ import {assertOpts} from './lizard-sign.test.js';
 
 export const assertSignAndVerify = async (
   name: FixtureCryptStoreKey,
-  payload: CryptIdPayload
+  payload: LunarObsidianCryptIdPayload
 ) => {
   const actual = await lunarCrypt.signId(name, payload);
   assertSuccessfulResultFormat(
@@ -29,7 +29,7 @@ export const assertSignAndVerify = async (
     return;
   }
 
-  const verifyActual = await lunarCrypt.verifyIdSignature(name, actual.value);
+  const verifyActual = await lunarCrypt.verifyId(name, actual.value);
 
   assertSuccessfulResult(verifyActual, payload, assertOpts);
 };
@@ -47,7 +47,7 @@ export const assertSignAndFailVerify = async ({
   expectedError,
 }: {
   name: FixtureCryptStoreKey;
-  payload: CryptIdPayload;
+  payload: LunarObsidianCryptIdPayload;
   failureTypes: Array<'delay' | 'wrong-secret'>;
   expectedError: LunarObsidianCryptError;
 }) => {
@@ -69,7 +69,7 @@ export const assertSignAndFailVerify = async ({
     ? otherLunarCrypt
     : lunarCrypt;
 
-  const verifyActual = await verificationLunarCrypt.verifyIdSignature(
+  const verifyActual = await verificationLunarCrypt.verifyId(
     name,
     actual.value
   );
