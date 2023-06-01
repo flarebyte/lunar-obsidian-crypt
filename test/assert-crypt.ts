@@ -1,4 +1,7 @@
-import {type CryptIdPayload} from '../src/crypt-model.js';
+import {
+  type LunarObsidianCryptError,
+  type CryptIdPayload,
+} from '../src/crypt-model.js';
 import {
   assertFailedResult,
   assertSuccessfulResult,
@@ -46,7 +49,7 @@ export const assertSignAndFailVerify = async ({
   name: FixtureCryptStoreKey;
   payload: CryptIdPayload;
   failureTypes: Array<'delay' | 'wrong-secret'>;
-  expectedError: string;
+  expectedError: LunarObsidianCryptError;
 }) => {
   const actual = await lunarCrypt.signId(name, payload);
   assertSuccessfulResultFormat(

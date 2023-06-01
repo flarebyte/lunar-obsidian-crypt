@@ -30,7 +30,10 @@ test('lizard should detect that the time has expired', async () => {
     name,
     payload,
     failureTypes: ['delay'],
-    expectedError: 'The JWT token has expired',
+    expectedError: {
+      step: 'verify-id/verify-token',
+      message: 'The JWT token has expired',
+    },
   });
 });
 
@@ -44,8 +47,11 @@ test('lizard should detect that the secret is wrong', async () => {
     name,
     payload,
     failureTypes: ['wrong-secret'],
-    expectedError:
-      'The signature for the JWT token cannot be verified using current secret',
+    expectedError: {
+      step: 'verify-id/verify-token',
+      message:
+        'The signature for the JWT token cannot be verified using current secret',
+    },
   });
 });
 

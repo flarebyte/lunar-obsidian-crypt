@@ -92,6 +92,37 @@ export const idPayloadWithExpSchema = z
   .strict()
   .describe('A list of cyphers');
 
+type ValidationError = {
+  message: string;
+  path: string;
+};
+
+export type LunarObsidianCryptError =
+  | {
+      step: 'sign-id/validate-payload' | 'verify-id/validate-payload';
+      errors: ValidationError[];
+    }
+  | {
+      step: 'sign-id/sign';
+      message: string;
+    }
+  | {
+      step: 'verify-id/extract-token';
+      message: string;
+    }
+  | {
+      step: 'verify-id/decode-token';
+      message: string;
+    }
+  | {
+      step: 'verify-id/verify-token';
+      message: string;
+    }
+  | {
+      step: 'verify-id/store' | 'sign-id/store';
+      message: string;
+    };
+
 export type LunarObsidianStoreModel = z.infer<typeof schema>;
 export type CrypLizardCypher = z.infer<typeof lizardCypher>;
 export type CryptEncryptionStrength = z.infer<typeof strength>;

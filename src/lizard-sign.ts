@@ -6,6 +6,7 @@ import {
   type CrypLizardCypher,
   type CryptIdPayloadWithExp,
   idPayloadWithExpSchema,
+  type LunarObsidianCryptError,
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
@@ -33,7 +34,7 @@ export const lizardSign = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   value: CryptIdPayload
-): Promise<Result<string, string>> => {
+): Promise<Result<string, LunarObsidianCryptError>> => {
   const {secret, expiration, strength} = cryptSignCypher;
   const realValue = {...value};
   const jwt = await new SignJWT(realValue)
@@ -46,15 +47,21 @@ export const lizardSign = async (
 const extractToken = (
   prefix: string,
   fullToken: string
-): Result<string, string> => {
+): Result<string, LunarObsidianCryptError> => {
   const [token, ...prefixParts] = fullToken.split(':').reverse();
   const actualPrefix = prefixParts.reverse().join(':');
   if (actualPrefix !== prefix) {
-    return willFail(`Prefix should be ${prefix} not ${actualPrefix}`);
+    return willFail({
+      step: 'verify-id/extract-token',
+      message: `Prefix should be ${prefix} not ${actualPrefix}`,
+    });
   }
 
   if (token === undefined) {
-    return willFail('There is no token');
+    return willFail({
+      step: 'verify-id/extract-token',
+      message: 'There is no token',
+    });
   }
 
   return succeed(token);
@@ -64,7 +71,7 @@ const safeJwtVerify = async (
   token: string,
   secret: Uint8Array,
   payloadWithExp: CryptIdPayloadWithExp
-): Promise<Result<CryptIdPayloadWithExp, string>> => {
+): Promise<Result<CryptIdPayloadWithExp, LunarObsidianCryptError>> => {
   try {
     await jwtVerify(token, secret);
     return succeed(payloadWithExp);
@@ -72,26 +79,33 @@ const safeJwtVerify = async (
     if (error instanceof Error) {
       switch (error.name) {
         case 'JWTExpired': {
-          return willFail('The JWT token has expired');
+          return willFail({
+            step: 'verify-id/verify-token',
+            message: 'The JWT token has expired',
+          });
         }
 
         case 'JWSSignatureVerificationFailed': {
-          return willFail(
-            'The signature for the JWT token cannot be verified using current secret'
-          );
+          return willFail({
+            step: 'verify-id/verify-token',
+            message:
+              'The signature for the JWT token cannot be verified using current secret',
+          });
         }
 
         default: {
-          return willFail(
-            `The JWT token could not be verified (${error.name})`
-          );
+          return willFail({
+            step: 'verify-id/verify-token',
+            message: `The JWT token could not be verified (${error.name})`,
+          });
         }
       }
     }
 
-    return willFail(
-      'An unexpected error occured during JWT token verification'
-    );
+    return willFail({
+      step: 'verify-id/verify-token',
+      message: 'An unexpected error occured during JWT token verification',
+    });
   }
 };
 
@@ -100,7 +114,7 @@ export const lizardVerify = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
-): Promise<Result<CryptIdPayload, string>> => {
+): Promise<Result<CryptIdPayload, LunarObsidianCryptError>> => {
   const {secret} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
@@ -114,7 +128,10 @@ export const lizardVerify = async (
     formatting: 'privacy-first',
   });
   if (parsedResult.status === 'failure') {
-    return willFail(JSON.stringify(parsedResult.error));
+    return willFail({
+      step: 'verify-id/validate-payload',
+      errors: parsedResult.error,
+    });
   }
 
   const verifyResult = await safeJwtVerify(token, secret, parsedResult.value);
