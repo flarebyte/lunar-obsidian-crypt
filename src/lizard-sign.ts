@@ -10,7 +10,9 @@ import {
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
-const strenghtToAlgorithm = (strength: LunarObsidianCryptEncryptionStrength) => {
+const strenghtToAlgorithm = (
+  strength: LunarObsidianCryptEncryptionStrength
+) => {
   switch (strength) {
     case 'sufficient': {
       return 'HS256';

@@ -24,6 +24,7 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     kind: 'lizard',
     title: 'lizard good',
     secret: encodeSecret('another-terrible-password'),
+    altSecret: encodeSecret('another-terrible-password-other'),
     expiration: {
       value: 2,
       unit: 'seconds',

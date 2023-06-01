@@ -11,7 +11,7 @@ test('lizard should generate JWT 256', async () => {
   await assertSignAndVerify(name, payload);
 });
 
-test('lizard should generate JWT 256 with context', async () => {
+test('lizard should generate with context', async () => {
   const payload = {
     id: 'lunar123',
     scope: {team: 'red'},
@@ -59,6 +59,12 @@ test('lizard should generate with good strength', async () => {
   const payload = {id: 'lunar123'};
   const name = 'lizard-good';
   await assertSignAndVerify(name, payload);
+});
+
+test('lizard should try previous secret if provided', async () => {
+  const payload = {id: 'lunar123'};
+  const name = 'lizard-good';
+  await assertSignAndVerify(name, payload, 'previous-password');
 });
 
 test('lizard should generate with strong strength', async () => {

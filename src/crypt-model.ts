@@ -40,6 +40,7 @@ const lizardCypher = z.object({
   kind: z.literal('lizard').describe('Lizard 🦎'),
   title: stringEffectFields.string1To50Line,
   secret: z.instanceof(Uint8Array),
+  altSecret: z.instanceof(Uint8Array).optional(),
   strength,
   expiration,
 });

@@ -17,9 +17,12 @@ import {assertOpts} from './lizard-sign.test.js';
 
 export const assertSignAndVerify = async (
   name: FixtureCryptStoreKey,
-  payload: LunarObsidianCryptIdPayload
+  payload: LunarObsidianCryptIdPayload,
+  flag?: 'previous-password'
 ) => {
-  const actual = await lunarCrypt.signId(name, payload);
+  const signLunarCrypt =
+    flag === 'previous-password' ? otherLunarCrypt : lunarCrypt;
+  const actual = await signLunarCrypt.signId(name, payload);
   assertSuccessfulResultFormat(
     actual,
     looksLikeJwt(`${name}:`),
