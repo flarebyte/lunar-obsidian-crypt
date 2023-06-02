@@ -138,7 +138,7 @@ export const lizardVerify = async (
 
   const verifyResult = await safeJwtVerify(token, secret, parsedResult.value);
   if (verifyResult.status === 'failure') {
-    if (typeof altSecret === 'string') {
+    if (altSecret !== undefined) {
       const altVerifyResult = await safeJwtVerify(
         token,
         altSecret,
