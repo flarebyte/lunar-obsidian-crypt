@@ -32,6 +32,34 @@ const strenghtToAlgorithm = (
   }
 };
 
+function checkScope(
+  actual: LunarObsidianCryptIdPayload['scope'],
+  expected: NonNullable<LunarObsidianCryptIdPayload['scope']>
+): Result<true, LunarObsidianCryptError> {
+  if (actual === undefined) {
+    return willFail({
+      step: 'verify-id/verify-scope',
+      message: 'A scope was expected in the payload',
+    });
+  }
+
+  const missingKeys = Object.entries(expected)
+    .map((keyValue) => ({k: keyValue[0], v: keyValue[1]}))
+    .filter((kv) => !Object.is(actual[kv.k], kv.v))
+    .map((kv) => kv.k);
+
+  if (missingKeys.length > 0) {
+    return willFail({
+      step: 'verify-id/verify-scope',
+      message: `The following fields [${missingKeys.join(
+        ','
+      )}] from the scope did not match the expectations`,
+    });
+  }
+
+  return succeed(true);
+}
+
 export const lizardSign = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
@@ -117,7 +145,7 @@ export const lizardVerify = async (
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
 ): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>> => {
-  const {secret, altSecret} = cryptSignCypher;
+  const {secret, altSecret, expectedScope} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
     return willFail(tokenResult.error);
@@ -134,6 +162,16 @@ export const lizardVerify = async (
       step: 'verify-id/validate-payload',
       errors: parsedResult.error,
     });
+  }
+
+  if (expectedScope !== undefined) {
+    const scopeCheckResult = checkScope(
+      parsedResult.value.scope,
+      expectedScope
+    );
+    if (scopeCheckResult.status === 'failure') {
+      return willFail(scopeCheckResult.error);
+    }
   }
 
   const verifyResult = await safeJwtVerify(token, secret, parsedResult.value);

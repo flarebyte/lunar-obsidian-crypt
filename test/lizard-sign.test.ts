@@ -67,8 +67,47 @@ test('lizard should try previous secret if provided', async () => {
   await assertSignAndVerify(name, payload, 'previous-password');
 });
 
-test('lizard should generate with strong strength', async () => {
-  const payload = {id: 'lunar123'};
+test('lizard should generate with strong strength and check the scope', async () => {
+  const payload = {
+    id: 'lunar123',
+    scope: {account: 'account890', willBeIgnored: 'should'},
+  };
   const name = 'lizard-strong';
   await assertSignAndVerify(name, payload);
+});
+
+test('lizard should detect scope with mandatory missing field', async () => {
+  const payload = {
+    id: 'lunar123',
+    scope: {noAccount: 'account890', willBeIgnored: 'should'},
+  };
+  const name = 'lizard-strong';
+  await assertSignAndFailVerify({
+    name,
+    payload,
+    failureTypes: [],
+    expectedError: {
+      step: 'verify-id/verify-scope',
+      message:
+        'The following fields [account] from the scope did not match the expectations',
+    },
+  });
+});
+
+test('lizard should detect scope with incorrect field', async () => {
+  const payload = {
+    id: 'lunar123',
+    scope: {account: 'wrong-account', willBeIgnored: 'should'},
+  };
+  const name = 'lizard-strong';
+  await assertSignAndFailVerify({
+    name,
+    payload,
+    failureTypes: [],
+    expectedError: {
+      step: 'verify-id/verify-scope',
+      message:
+        'The following fields [account] from the scope did not match the expectations',
+    },
+  });
 });

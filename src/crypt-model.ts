@@ -110,6 +110,7 @@ export type LunarObsidianCryptError =
         | 'verify-id/extract-token'
         | 'verify-id/decode-token'
         | 'verify-id/verify-token'
+        | 'verify-id/verify-scope'
         | 'verify-id/store'
         | 'sign-id/store';
       message: string;
