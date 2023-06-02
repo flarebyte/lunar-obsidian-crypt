@@ -70,7 +70,7 @@ test('lizard should try previous secret if provided', async () => {
 test('lizard should generate with strong strength and check the scope', async () => {
   const payload = {
     id: 'lunar123',
-    scope: {account: 'account890', willBeIgnored: 'should'},
+    scope: {account: 'account890', year: '2022', willBeIgnored: 'should'},
   };
   const name = 'lizard-strong';
   await assertSignAndVerify(name, payload);
@@ -79,7 +79,7 @@ test('lizard should generate with strong strength and check the scope', async ()
 test('lizard should detect scope with mandatory missing field', async () => {
   const payload = {
     id: 'lunar123',
-    scope: {noAccount: 'account890', willBeIgnored: 'should'},
+    scope: {noAccount: 'account890', year: '2022', willBeIgnored: 'should'},
   };
   const name = 'lizard-strong';
   await assertSignAndFailVerify({
@@ -97,7 +97,7 @@ test('lizard should detect scope with mandatory missing field', async () => {
 test('lizard should detect scope with incorrect field', async () => {
   const payload = {
     id: 'lunar123',
-    scope: {account: 'wrong-account', willBeIgnored: 'should'},
+    scope: {account: 'wrong-account', year: '2022', willBeIgnored: 'should'},
   };
   const name = 'lizard-strong';
   await assertSignAndFailVerify({
@@ -108,6 +108,23 @@ test('lizard should detect scope with incorrect field', async () => {
       step: 'verify-id/verify-scope',
       message:
         'The following fields [account] from the scope did not match the expectations',
+    },
+  });
+});
+
+test('lizard should detect scope that fails the custom validator', async () => {
+  const payload = {
+    id: 'lunar123',
+    scope: {account: 'account890', year: '1990', willBeIgnored: 'should'},
+  };
+  const name = 'lizard-strong';
+  await assertSignAndFailVerify({
+    name,
+    payload,
+    failureTypes: [],
+    expectedError: {
+      step: 'verify-id/verify-scope',
+      message: 'The custom validator failed with document is too ancient',
     },
   });
 });

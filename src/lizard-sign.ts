@@ -145,7 +145,7 @@ export const lizardVerify = async (
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
 ): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>> => {
-  const {secret, altSecret, expectedScope} = cryptSignCypher;
+  const {secret, altSecret, expectedScope, scopeValidator} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
     return willFail(tokenResult.error);
@@ -171,6 +171,23 @@ export const lizardVerify = async (
     );
     if (scopeCheckResult.status === 'failure') {
       return willFail(scopeCheckResult.error);
+    }
+  }
+
+  if (scopeValidator !== undefined) {
+    if (parsedResult.value.scope === undefined) {
+      return willFail({
+        step: 'verify-id/verify-scope',
+        message: 'The scope should be included in the JWT payload',
+      });
+    }
+
+    const validatedScope = scopeValidator(parsedResult.value.scope);
+    if (typeof validatedScope === 'string') {
+      return willFail({
+        step: 'verify-id/verify-scope',
+        message: `The custom validator failed with ${validatedScope}`,
+      });
     }
   }
 

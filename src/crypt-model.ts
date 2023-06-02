@@ -49,6 +49,11 @@ const lizardCypher = z.object({
   strength,
   expiration,
   expectedScope: z.record(stringFields.stringKeyName, scopeValue).optional(),
+  scopeValidator: z
+    .function()
+    .args(z.record(stringFields.stringKeyName, scopeValue))
+    .returns(z.boolean().or(stringFields.string1To140))
+    .optional(),
 });
 
 const crocodileCypher = z.object({

@@ -43,6 +43,18 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     expectedScope: {
       account: 'account890',
     },
+    scopeValidator(scope: Record<string, string | string[]>) {
+      const {year} = scope;
+      if (typeof year !== 'string') {
+        return 'incorrect format';
+      }
+
+      if (Number.parseInt(year, 10) < 2000) {
+        return 'document is too ancient';
+      }
+
+      return true;
+    },
   });
 
 const otherCryptStoreBuilder =
