@@ -36,6 +36,11 @@ const expiration = z.object({
   unit: z.enum(timeUnitKeys).describe(describeEnum('Time unit: ', timeUnit)),
 });
 
+const scopeValue = z.union([
+  stringFields.string1To600,
+  z.array(stringFields.string1To600),
+]);
+
 const lizardCypher = z.object({
   kind: z.literal('lizard').describe('Lizard 🦎'),
   title: stringEffectFields.string1To50Line,
@@ -43,6 +48,7 @@ const lizardCypher = z.object({
   altSecret: z.instanceof(Uint8Array).optional(),
   strength,
   expiration,
+  expectedScope: z.record(stringFields.stringKeyName, scopeValue).optional(),
 });
 
 const crocodileCypher = z.object({
@@ -70,11 +76,6 @@ const schema = z
   })
   .strict()
   .describe('A list of cyphers');
-
-const scopeValue = z.union([
-  stringFields.string1To600,
-  z.array(stringFields.string1To600),
-]);
 
 export const idPayloadSchema = z
   .object({

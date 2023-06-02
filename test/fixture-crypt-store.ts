@@ -40,6 +40,9 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
       unit: 'seconds',
     },
     strength: 'strong',
+    expectedScope: {
+      account: 'account890',
+    },
   });
 
 const otherCryptStoreBuilder =
