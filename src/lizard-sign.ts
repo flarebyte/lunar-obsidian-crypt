@@ -62,7 +62,7 @@ function checkScope(
 
 export const lizardSign = async (
   name: string,
-  cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
+  cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
   value: LunarObsidianCryptIdPayload
 ): Promise<Result<string, LunarObsidianCryptError>> => {
   const {secret, expiration, strength} = cryptSignCypher;
@@ -142,7 +142,7 @@ const safeJwtVerify = async (
 /** Lizard verify */
 export const lizardVerify = async (
   name: string,
-  cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
+  cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
   fullToken: string
 ): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>> => {
   const {secret, altSecret, expectedScope, scopeValidator} = cryptSignCypher;

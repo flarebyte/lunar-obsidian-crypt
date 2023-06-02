@@ -42,7 +42,11 @@ const scopeValue = z.union([
 ]);
 
 const lizardCypher = z.object({
-  kind: z.literal('lizard').describe('Lizard 🦎'),
+  kind: z
+    .literal('translucent-lizard')
+    .describe(
+      'Translucent lizard 🦎. Based on JSON Web Token, it uses a secret to create and verify a signature. The payload is always visible'
+    ),
   title: stringEffectFields.string1To50Line,
   secret: z.instanceof(Uint8Array),
   altSecret: z.instanceof(Uint8Array).optional(),

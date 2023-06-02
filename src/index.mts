@@ -16,7 +16,7 @@ export class LunarObsidianCrypt<K extends string> {
             return willFail({step: 'sign-id/store',message: `Not supported cypher ${name}`})
         }
         switch(cypher.kind){
-            case 'lizard': {
+            case 'translucent-lizard': {
                 return await lizardSign(name, cypher, payload);
             }
             default: {
@@ -31,7 +31,7 @@ export class LunarObsidianCrypt<K extends string> {
                 return willFail({step: 'verify-id/store',message: `Not supported cypher ${name}`})
             }
             switch(cypher.kind){
-                case 'lizard': {
+                case 'translucent-lizard': {
                     return await lizardVerify(name, cypher, fullToken);
                 }
                 default: {
