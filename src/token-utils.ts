@@ -26,7 +26,7 @@ export const extractToken = (
 
 export const extractTokenPrefix = <K extends string>(
   fullToken: string,
-  supported: string[]
+  supported: readonly string[]
 ): Result<K, LunarObsidianCryptError> => {
   const [_token, ...prefixParts] = fullToken.split(':').reverse();
   const actualPrefix = prefixParts.reverse().join(':');

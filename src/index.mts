@@ -6,9 +6,9 @@ import { extractTokenPrefix } from "./token-utils.js";
 
 export class LunarObsidianCrypt<K extends string> {
     private store: LunarObsidianStoreModel = { title: 'No title yet', cyphers: {}};
-    private prefixes: string[] = [];
+    private prefixes: readonly string[] = [];
     
-    constructor(builder: LunarObsidianStoreBuilder<K>, prefixes: string[]){
+    constructor(builder: LunarObsidianStoreBuilder<K>, prefixes: readonly string[]){
         this.prefixes=prefixes;
         this.store = builder.build();
     }
