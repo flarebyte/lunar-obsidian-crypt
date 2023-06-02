@@ -9,6 +9,7 @@ import {
   type LunarObsidianCryptError,
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
+import {extractToken} from './token-utils.js';
 
 const strenghtToAlgorithm = (
   strength: LunarObsidianCryptEncryptionStrength
@@ -72,29 +73,6 @@ export const lizardSign = async (
     .setExpirationTime(`${expiration.value}s`)
     .sign(secret);
   return succeed(`${name}:${jwt}`);
-};
-
-const extractToken = (
-  prefix: string,
-  fullToken: string
-): Result<string, LunarObsidianCryptError> => {
-  const [token, ...prefixParts] = fullToken.split(':').reverse();
-  const actualPrefix = prefixParts.reverse().join(':');
-  if (actualPrefix !== prefix) {
-    return willFail({
-      step: 'verify-id/extract-token',
-      message: `Prefix should be ${prefix} not ${actualPrefix}`,
-    });
-  }
-
-  if (token === undefined) {
-    return willFail({
-      step: 'verify-id/extract-token',
-      message: 'There is no token',
-    });
-  }
-
-  return succeed(token);
 };
 
 const safeJwtVerify = async (

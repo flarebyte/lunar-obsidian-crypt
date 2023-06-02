@@ -2,11 +2,14 @@ import { LunarObsidianStoreBuilder } from "./crypt-builder.js";
 import { LunarObsidianCryptIdPayload, LunarObsidianCryptError, LunarObsidianStoreModel } from "./crypt-model.js";
 import { lizardSign, lizardVerify } from "./lizard-sign.js";
 import { Result, willFail } from "./railway.js";
+import { extractTokenPrefix } from "./token-utils.js";
 
 export class LunarObsidianCrypt<K extends string> {
     private store: LunarObsidianStoreModel = { title: 'No title yet', cyphers: {}};
+    private prefixes: string[] = [];
     
-    constructor(builder: LunarObsidianStoreBuilder<K>){
+    constructor(builder: LunarObsidianStoreBuilder<K>, prefixes: string[]){
+        this.prefixes=prefixes;
         this.store = builder.build();
     }
 
@@ -25,7 +28,7 @@ export class LunarObsidianCrypt<K extends string> {
             }
                 
         }
-        public async verifyId(name: K, fullToken: string): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>>{
+    public async verifyId(name: K, fullToken: string): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>>{
             const cypher = this.store.cyphers[name];
             if (cypher === undefined){
                 return willFail({step: 'verify-id/store',message: `Not supported cypher ${name}`})
@@ -39,6 +42,13 @@ export class LunarObsidianCrypt<K extends string> {
                 }
                 }
                     
+            }
+            public async verifyId2(fullToken: string): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>>{
+                const prefixResult = extractTokenPrefix<K>(fullToken, this.prefixes);
+                if (prefixResult.status==='failure'){
+                    return willFail(prefixResult.error);
+                }
+                return this.verifyId(prefixResult.value, fullToken);
             }
     }
 
