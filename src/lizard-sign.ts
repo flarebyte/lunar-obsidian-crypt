@@ -117,7 +117,7 @@ export const lizardVerify = async (
   cryptSignCypher: CrypLizardCypher & {kind: 'lizard'},
   fullToken: string
 ): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>> => {
-  const {secret} = cryptSignCypher;
+  const {secret, altSecret} = cryptSignCypher;
   const tokenResult = extractToken(name, fullToken);
   if (tokenResult.status === 'failure') {
     return willFail(tokenResult.error);
@@ -138,6 +138,22 @@ export const lizardVerify = async (
 
   const verifyResult = await safeJwtVerify(token, secret, parsedResult.value);
   if (verifyResult.status === 'failure') {
+    if (typeof altSecret === 'string') {
+      const altVerifyResult = await safeJwtVerify(
+        token,
+        altSecret,
+        parsedResult.value
+      );
+      if (altVerifyResult.status === 'success') {
+        return succeed({...altVerifyResult.value, exp: undefined});
+      }
+
+      return willFail({
+        ...altVerifyResult.error,
+        finalMessage: 'Verification with previous secret failed as well',
+      });
+    }
+
     return willFail(verifyResult.error);
   }
 

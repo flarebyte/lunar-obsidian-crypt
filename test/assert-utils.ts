@@ -11,7 +11,11 @@ export function assertSuccessfulResult<A, E>(
   opts?: AssertOpts
 ) {
   if (actual.status !== 'success') {
-    assert.strictEqual(actual.status, 'success');
+    assert.strictEqual(
+      actual.status,
+      'success',
+      'Got failure instead of success: ' + JSON.stringify(actual.error)
+    );
     return;
   }
 

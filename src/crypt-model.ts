@@ -104,24 +104,15 @@ export type LunarObsidianCryptError =
       errors: ValidationError[];
     }
   | {
-      step: 'sign-id/sign';
+      step:
+        | 'sign-id/sign'
+        | 'verify-id/extract-token'
+        | 'verify-id/decode-token'
+        | 'verify-id/verify-token'
+        | 'verify-id/store'
+        | 'sign-id/store';
       message: string;
-    }
-  | {
-      step: 'verify-id/extract-token';
-      message: string;
-    }
-  | {
-      step: 'verify-id/decode-token';
-      message: string;
-    }
-  | {
-      step: 'verify-id/verify-token';
-      message: string;
-    }
-  | {
-      step: 'verify-id/store' | 'sign-id/store';
-      message: string;
+      finalMessage?: string;
     };
 
 export type LunarObsidianStoreModel = z.infer<typeof schema>;
