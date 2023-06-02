@@ -32,7 +32,7 @@ export const assertSignAndVerify = async (
     return;
   }
 
-  const verifyActual = await lunarCrypt.verifyId(name, actual.value);
+  const verifyActual = await lunarCrypt.verifyId(actual.value);
 
   assertSuccessfulResult(verifyActual, payload, assertOpts);
 };
@@ -72,10 +72,7 @@ export const assertSignAndFailVerify = async ({
     ? otherLunarCrypt
     : lunarCrypt;
 
-  const verifyActual = await verificationLunarCrypt.verifyId(
-    name,
-    actual.value
-  );
+  const verifyActual = await verificationLunarCrypt.verifyId(actual.value);
 
   assertFailedResult(verifyActual, expectedError, assertOpts);
 };
