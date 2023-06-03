@@ -12,7 +12,7 @@ const encodeSecret = (secret: string): Uint8Array =>
   new TextEncoder().encode(secret);
 const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
   .setTitle('Test store')
-  .addLizard('lizard-sufficient', {
+  .addTranslucentLizard('lizard-sufficient', {
     kind: 'translucent-lizard',
     title: 'lizard sufficient',
     secret: encodeSecret('terrible-password'),
@@ -22,7 +22,7 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     },
     strength: 'sufficient',
   })
-  .addLizard('lizard-good', {
+  .addTranslucentLizard('lizard-good', {
     kind: 'translucent-lizard',
     title: 'lizard good',
     secret: encodeSecret('another-terrible-password'),
@@ -33,7 +33,7 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     },
     strength: 'good',
   })
-  .addLizard('lizard-strong', {
+  .addTranslucentLizard('lizard-strong', {
     kind: 'translucent-lizard',
     title: 'lizard strong',
     secret: encodeSecret('very-terrible-password'),
@@ -62,7 +62,7 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
 const otherCryptStoreBuilder =
   new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     .setTitle('Test store')
-    .addLizard('lizard-sufficient', {
+    .addTranslucentLizard('lizard-sufficient', {
       kind: 'translucent-lizard',
       title: 'lizard sufficient',
       secret: encodeSecret('terrible-password-other'),
@@ -72,7 +72,7 @@ const otherCryptStoreBuilder =
       },
       strength: 'sufficient',
     })
-    .addLizard('lizard-good', {
+    .addTranslucentLizard('lizard-good', {
       kind: 'translucent-lizard',
       title: 'lizard good',
       secret: encodeSecret('another-terrible-password-other'),
@@ -82,7 +82,7 @@ const otherCryptStoreBuilder =
       },
       strength: 'good',
     })
-    .addLizard('lizard-strong', {
+    .addTranslucentLizard('lizard-strong', {
       kind: 'translucent-lizard',
       title: 'lizard strong',
       secret: encodeSecret('very-terrible-password-other'),

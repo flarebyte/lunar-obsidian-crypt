@@ -3,7 +3,7 @@ import {safeParse} from 'faora-kai';
 import {
   type LunarObsidianCryptIdPayload,
   type LunarObsidianCryptEncryptionStrength,
-  type CrypLizardCypher,
+  type LunarObsidianCrypTranslucentLizard,
   type CryptIdPayloadWithExp,
   idPayloadWithExpSchema,
   type LunarObsidianCryptError,
@@ -64,7 +64,9 @@ function checkScope(
 
 export const translucentLizardSignId = async (
   name: string,
-  cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
+  cryptSignCypher: LunarObsidianCrypTranslucentLizard & {
+    kind: 'translucent-lizard';
+  },
   payloadWithId: LunarObsidianCryptIdPayload
 ): Promise<Result<string, LunarObsidianCryptError>> => {
   const {secret, expiration, strength} = cryptSignCypher;
@@ -147,7 +149,9 @@ const safeJwtVerify = async (
 /** Lizard verify */
 export const translucentLizardVerifyId = async (
   name: string,
-  cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
+  cryptSignCypher: LunarObsidianCrypTranslucentLizard & {
+    kind: 'translucent-lizard';
+  },
   fullToken: string
 ): Promise<Result<LunarObsidianCryptIdPayload, LunarObsidianCryptError>> => {
   const {secret, altSecret, expectedScope, scopeValidator} = cryptSignCypher;
