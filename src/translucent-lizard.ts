@@ -7,6 +7,7 @@ import {
   type CryptIdPayloadWithExp,
   idPayloadWithExpSchema,
   type LunarObsidianCryptError,
+  idPayloadSchema,
 } from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 import {extractToken} from './token-utils.js';
@@ -64,10 +65,21 @@ function checkScope(
 export const translucentLizardSignId = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
-  value: LunarObsidianCryptIdPayload
+  payloadWithId: LunarObsidianCryptIdPayload
 ): Promise<Result<string, LunarObsidianCryptError>> => {
   const {secret, expiration, strength} = cryptSignCypher;
-  const realValue = {...value};
+  const parsedResult = safeParse<LunarObsidianCryptIdPayload>(payloadWithId, {
+    schema: idPayloadSchema,
+    formatting: 'privacy-first',
+  });
+  if (parsedResult.status === 'failure') {
+    return willFail({
+      step: 'sign-id/validate-payload',
+      errors: parsedResult.error,
+    });
+  }
+
+  const realValue = {...parsedResult.value};
   try {
     const jwt = await new SignJWT(realValue)
       .setProtectedHeader({alg: strenghtToAlgorithm(strength)})

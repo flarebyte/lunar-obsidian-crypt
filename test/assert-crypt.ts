@@ -43,6 +43,22 @@ async function delayMs(ms: number) {
   });
 }
 
+export const assertFailSign = async ({
+  name,
+  payload,
+  expectedError,
+}: {
+  name: FixtureCryptStoreKey;
+  payload: Record<string, unknown>;
+  expectedError: LunarObsidianCryptError;
+}) => {
+  const actual = await lunarCrypt.signId(
+    name,
+    payload as LunarObsidianCryptIdPayload
+  );
+  assertFailedResult(actual, expectedError, assertOpts);
+};
+
 export const assertSignAndFailVerify = async ({
   name,
   payload,

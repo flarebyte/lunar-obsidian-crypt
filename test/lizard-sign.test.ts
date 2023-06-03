@@ -1,5 +1,9 @@
 import {test} from 'node:test';
-import {assertSignAndFailVerify, assertSignAndVerify} from './assert-crypt.js';
+import {
+  assertFailSign,
+  assertSignAndFailVerify,
+  assertSignAndVerify,
+} from './assert-crypt.js';
 
 export const assertOpts = {
   stringify: true,
@@ -11,13 +15,31 @@ test('lizard should generate JWT 256', async () => {
   await assertSignAndVerify(name, payload);
 });
 
-test('lizard should generate with context', async () => {
+test('lizard should generate with scope context', async () => {
   const payload = {
     id: 'lunar123',
     scope: {team: 'red'},
   };
   const name = 'lizard-sufficient';
   await assertSignAndVerify(name, payload);
+});
+
+test('lizard should reject invalid payload', async () => {
+  const payload = {
+    id: 'lunar123',
+    scope: {team: 5},
+  };
+  const name = 'lizard-sufficient';
+  await assertFailSign({
+    name,
+    payload,
+    expectedError: {
+      step: 'sign-id/validate-payload',
+      errors: [
+        {path: 'scope.team', message: 'The union for the field is invalid'},
+      ],
+    },
+  });
 });
 
 test('lizard should detect that the time has expired', async () => {
