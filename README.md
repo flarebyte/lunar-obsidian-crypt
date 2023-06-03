@@ -14,11 +14,25 @@ Foolproof encryption functions curated for business cases
 
 Highlights:
 
-* Escape the encryption minefield
-* Designed for specific use cases. Ex. signing ID.
-* Foolproof defaults
-* Uses JOSE JWT under the hood
+* Simplify your encryption needs with a user-friendly library
+* Choose the best encryption method for your scenario, such as signing ID, verifying data, or securing messages
+* Avoid common encryption pitfalls with sensible defaults and best practices
+* Leverage the power and security of JOSE JWT standards
 
+
+
+A few examples of commands:
+
+Sign a payload with just an identifier and get back a full token:
+```bash
+const signResult = await signLunarCrypt.signId('product', { id: 'product123'});
+
+```
+Verify a full token and get back a payload:
+```bash
+const verifyResult = await lunarCrypt.verifyId(fullToken);
+
+```
 
 ## Documentation and links
 
@@ -35,6 +49,7 @@ Highlights:
 * [Software engineering principles :gem:](https://github.com/flarebyte/overview/blob/main/PRINCIPLES.md)
 * [Overview of Flarebyte.com ecosystem :factory:](https://github.com/flarebyte/overview)
 * [Npm dependencies](DEPENDENCIES.md)
+* [Usage](USAGE.md)
 
 ## Related
 

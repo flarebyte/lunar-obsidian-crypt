@@ -18,12 +18,14 @@ model:
       - Leverage the power and security of JOSE JWT standards
     links:
       - "[Npm dependencies](DEPENDENCIES.md)"
+      - "[Usage](USAGE.md)"
     tags:
       - image-hero
     cheatsheet:
-      - title: automatically
-        example: todo
-
+      - title: Sign a payload with just an identifier and get back a full token
+        example: "const signResult = await signLunarCrypt.signId('product', { id: 'product123'});"
+      - title: Verify a full token and get back a payload
+        example: "const verifyResult = await lunarCrypt.verifyId(fullToken);"
 
   github:
     account: flarebyte
