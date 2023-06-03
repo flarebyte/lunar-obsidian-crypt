@@ -143,7 +143,18 @@ This way the expected resulting string size can be anticipated.
 
 Resulting string: `prefix:code`
 
-One advantage of signing a payload instead of encrypting it is that it allows anyone to verify the source and content of the payload without needing to know the secret. This means the payload could be inspected for tracing errors for example. Another advantage of signing a payload instead of encrypting it is that it reduces the size and complexity of the payload.
-Signing only requires hashing and encrypting a small portion of the payload (the signature), while encrypting requires transforming the entire payload into a ciphertext.
+One advantage of signing a payload instead of encrypting it is that it allows
+anyone to verify the source and content of the payload without needing to
+know the secret. This means the payload could be inspected for tracing errors
+for example. Another advantage of signing a payload instead of encrypting it
+is that it reduces the size and complexity of the payload.
+Signing only requires hashing and encrypting a small portion of the payload
+(the signature), while encrypting requires transforming the entire payload
+into a ciphertext.
 
-However, signing a payload instead of encrypting it also has some disadvantages. One disadvantage is that it does not protect the payload from being read or copied by unauthorized parties. This can be problematic for sensitive or confidential messages that need to be kept secret from eavesdroppers. But one could argue that the sensitive payload should not be passed to a possibly unauthorized party in the first place. 
+However, signing a payload instead of encrypting it also has some
+disadvantages. One disadvantage is that it does not protect the payload from
+being read or copied by unauthorized parties. This can be problematic for
+sensitive or confidential messages that need to be kept secret from
+eavesdroppers. But one could argue that the sensitive payload should not be
+passed to a possibly unauthorized party in the first place.
