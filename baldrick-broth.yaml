@@ -12,14 +12,19 @@ model:
       - HS256
   readme:
     highlights:
-      - Escape the encryption minefield
-      - Designed for specific use cases. Ex. signing ID.
-      - Foolproof defaults
-      - Uses JOSE JWT under the hood
+      - Simplify your encryption needs with a user-friendly library
+      - Choose the best encryption method for your scenario, such as signing ID, verifying data, or securing messages
+      - Avoid common encryption pitfalls with sensible defaults and best practices
+      - Leverage the power and security of JOSE JWT standards
     links:
       - "[Npm dependencies](DEPENDENCIES.md)"
     tags:
       - image-hero
+    cheatsheet:
+      - title: automatically
+        example: >
+          
+
   github:
     account: flarebyte
     name: lunar-obsidian-crypt
