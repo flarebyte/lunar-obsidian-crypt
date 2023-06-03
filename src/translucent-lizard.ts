@@ -68,11 +68,26 @@ export const translucentLizardSignId = async (
 ): Promise<Result<string, LunarObsidianCryptError>> => {
   const {secret, expiration, strength} = cryptSignCypher;
   const realValue = {...value};
-  const jwt = await new SignJWT(realValue)
-    .setProtectedHeader({alg: strenghtToAlgorithm(strength)})
-    .setExpirationTime(`${expiration.value} ${expiration.unit}`)
-    .sign(secret);
-  return succeed(`${name}:${jwt}`);
+  try {
+    const jwt = await new SignJWT(realValue)
+      .setProtectedHeader({alg: strenghtToAlgorithm(strength)})
+      .setExpirationTime(`${expiration.value} ${expiration.unit}`)
+      .sign(secret);
+
+    return succeed(`${name}:${jwt}`);
+  } catch (error) {
+    if (error instanceof Error) {
+      return willFail({
+        step: 'sign-id/sign',
+        message: `The JWT token could not be signed (${error.name})`,
+      });
+    }
+
+    return willFail({
+      step: 'sign-id/sign',
+      message: `The JWT token could not be signed due to an unexpected error`,
+    });
+  }
 };
 
 const safeJwtVerify = async (
