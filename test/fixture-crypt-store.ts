@@ -92,12 +92,12 @@ const otherCryptStoreBuilder =
       },
       strength: 'strong',
     });
-export const lunarCrypt = new LunarObsidianCrypt<FixtureCryptStoreKey>(
-  cryptStoreBuilder,
-  fixtureCryptStoreKeys
-);
+export const lunarCrypt = new LunarObsidianCrypt<FixtureCryptStoreKey>({
+  builder: cryptStoreBuilder,
+  prefixes: fixtureCryptStoreKeys,
+});
 
-export const otherLunarCrypt = new LunarObsidianCrypt<FixtureCryptStoreKey>(
-  otherCryptStoreBuilder,
-  fixtureCryptStoreKeys
-);
+export const otherLunarCrypt = new LunarObsidianCrypt<FixtureCryptStoreKey>({
+  builder: otherCryptStoreBuilder,
+  prefixes: fixtureCryptStoreKeys,
+});

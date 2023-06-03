@@ -19,10 +19,13 @@ export class LunarObsidianCrypt<K extends string> {
 
   private readonly prefixes: readonly string[] = [];
 
-  constructor(
-    builder: LunarObsidianStoreBuilder<K>,
-    prefixes: readonly string[]
-  ) {
+  constructor({
+    builder,
+    prefixes,
+  }: {
+    builder: LunarObsidianStoreBuilder<K>;
+    prefixes: readonly string[];
+  }) {
     this.prefixes = prefixes;
     this.store = builder.build();
   }
