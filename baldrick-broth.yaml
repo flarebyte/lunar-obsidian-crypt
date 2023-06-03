@@ -8,12 +8,14 @@ model:
       - hashing
       - authentication
       - secret
+      - JWT
+      - HS256
   readme:
     highlights:
       - Escape the encryption minefield
-      - Designed for specific use cases
+      - Designed for specific use cases. Ex. signing ID.
       - Foolproof defaults
-      - Server-side and AWS support
+      - Uses JOSE JWT under the hood
     links:
       - "[Npm dependencies](DEPENDENCIES.md)"
     tags:
