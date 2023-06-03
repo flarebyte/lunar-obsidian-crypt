@@ -13,7 +13,6 @@ const encodeSecret = (secret: string): Uint8Array =>
 const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
   .setTitle('Test store')
   .addTranslucentLizard('lizard-sufficient', {
-    kind: 'translucent-lizard',
     title: 'lizard sufficient',
     secret: encodeSecret('terrible-password'),
     expiration: {
@@ -23,7 +22,6 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     strength: 'sufficient',
   })
   .addTranslucentLizard('lizard-good', {
-    kind: 'translucent-lizard',
     title: 'lizard good',
     secret: encodeSecret('another-terrible-password'),
     altSecret: encodeSecret('another-terrible-password-other'),
@@ -34,7 +32,6 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     strength: 'good',
   })
   .addTranslucentLizard('lizard-strong', {
-    kind: 'translucent-lizard',
     title: 'lizard strong',
     secret: encodeSecret('very-terrible-password'),
     expiration: {
@@ -63,7 +60,6 @@ const otherCryptStoreBuilder =
   new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     .setTitle('Test store')
     .addTranslucentLizard('lizard-sufficient', {
-      kind: 'translucent-lizard',
       title: 'lizard sufficient',
       secret: encodeSecret('terrible-password-other'),
       expiration: {
@@ -73,7 +69,6 @@ const otherCryptStoreBuilder =
       strength: 'sufficient',
     })
     .addTranslucentLizard('lizard-good', {
-      kind: 'translucent-lizard',
       title: 'lizard good',
       secret: encodeSecret('another-terrible-password-other'),
       expiration: {
@@ -83,7 +78,6 @@ const otherCryptStoreBuilder =
       strength: 'good',
     })
     .addTranslucentLizard('lizard-strong', {
-      kind: 'translucent-lizard',
       title: 'lizard strong',
       secret: encodeSecret('very-terrible-password-other'),
       expiration: {

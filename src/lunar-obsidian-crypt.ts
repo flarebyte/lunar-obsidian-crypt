@@ -59,7 +59,7 @@ export class LunarObsidianCrypt<K extends string> {
       default: {
         return willFail({
           step: 'sign-id/store',
-          message: `Not supported cypher ${cypher.kind}`,
+          message: `Not supported cypher`,
         });
       }
     }
@@ -91,7 +91,7 @@ export class LunarObsidianCrypt<K extends string> {
       default: {
         return willFail({
           step: 'verify-id/store',
-          message: `Not supported cypher ${cypher.kind}`,
+          message: `Not supported cypher`,
         });
       }
     }

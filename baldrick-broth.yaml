@@ -22,8 +22,8 @@ model:
       - image-hero
     cheatsheet:
       - title: automatically
-        example: >
-          
+        example: todo
+
 
   github:
     account: flarebyte

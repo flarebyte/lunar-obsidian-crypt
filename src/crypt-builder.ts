@@ -19,9 +19,9 @@ export class LunarObsidianStoreBuilder<K extends string> {
   /** Add configuration for translucent lizard 🦎. Based on JSON Web Token, it uses a secret to create and verify a signature. The payload is always visible */
   public addTranslucentLizard(
     name: K,
-    opts: LunarObsidianCrypTranslucentLizard
+    opts: Omit<LunarObsidianCrypTranslucentLizard, 'kind'>
   ): this {
-    this.cyphers[name] = opts;
+    this.cyphers[name] = {...opts, kind: 'translucent-lizard'};
     return this;
   }
 
