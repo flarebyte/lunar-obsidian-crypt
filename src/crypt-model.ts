@@ -7,17 +7,9 @@ const timeUnit: Record<string, string> = {
   hours: 'Hours',
   days: 'Days',
   weeks: 'Weeks',
-  months: 'Months',
 };
 
-const timeUnitKeys = [
-  'seconds',
-  'minutes',
-  'hours',
-  'days',
-  'weeks',
-  'months',
-] as const;
+const timeUnitKeys = ['seconds', 'minutes', 'hours', 'days', 'weeks'] as const;
 
 const encryptionStrength = {
   sufficient: 'Sufficient',

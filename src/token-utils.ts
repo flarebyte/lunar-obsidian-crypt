@@ -1,6 +1,7 @@
 import {type LunarObsidianCryptError} from './crypt-model.js';
 import {type Result, succeed, willFail} from './railway.js';
 
+/** Extract a JWT token from the full token with prefix */
 export const extractToken = (
   prefix: string,
   fullToken: string
@@ -24,6 +25,7 @@ export const extractToken = (
   return succeed(token);
 };
 
+/** Extract the full token prefix */
 export const extractTokenPrefix = <K extends string>(
   fullToken: string,
   supported: readonly string[]

@@ -1,5 +1,4 @@
-import {LunarObsidianStoreBuilder} from '../src/crypt-builder.js';
-import {LunarObsidianCrypt} from '../src/index.mjs';
+import {LunarObsidianCrypt, LunarObsidianStoreBuilder} from '../src/index.mjs';
 
 const fixtureCryptStoreKeys = [
   'lizard-sufficient',
@@ -30,7 +29,7 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     altSecret: encodeSecret('another-terrible-password-other'),
     expiration: {
       value: 2,
-      unit: 'seconds',
+      unit: 'days',
     },
     strength: 'good',
   })
@@ -40,7 +39,7 @@ const cryptStoreBuilder = new LunarObsidianStoreBuilder<FixtureCryptStoreKey>()
     secret: encodeSecret('very-terrible-password'),
     expiration: {
       value: 2,
-      unit: 'seconds',
+      unit: 'weeks',
     },
     strength: 'strong',
     expectedScope: {
@@ -79,7 +78,7 @@ const otherCryptStoreBuilder =
       secret: encodeSecret('another-terrible-password-other'),
       expiration: {
         value: 2,
-        unit: 'seconds',
+        unit: 'days',
       },
       strength: 'good',
     })
@@ -89,7 +88,7 @@ const otherCryptStoreBuilder =
       secret: encodeSecret('very-terrible-password-other'),
       expiration: {
         value: 2,
-        unit: 'seconds',
+        unit: 'weeks',
       },
       strength: 'strong',
     });

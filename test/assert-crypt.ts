@@ -1,7 +1,7 @@
 import {
   type LunarObsidianCryptError,
   type LunarObsidianCryptIdPayload,
-} from '../src/crypt-model.js';
+} from '../src/index.mjs';
 import {
   assertFailedResult,
   assertSuccessfulResult,

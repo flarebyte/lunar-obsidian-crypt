@@ -61,7 +61,7 @@ function checkScope(
   return succeed(true);
 }
 
-export const lizardSign = async (
+export const translucentLizardSignId = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
   value: LunarObsidianCryptIdPayload
@@ -70,7 +70,7 @@ export const lizardSign = async (
   const realValue = {...value};
   const jwt = await new SignJWT(realValue)
     .setProtectedHeader({alg: strenghtToAlgorithm(strength)})
-    .setExpirationTime(`${expiration.value}s`)
+    .setExpirationTime(`${expiration.value} ${expiration.unit}`)
     .sign(secret);
   return succeed(`${name}:${jwt}`);
 };
@@ -118,7 +118,7 @@ const safeJwtVerify = async (
 };
 
 /** Lizard verify */
-export const lizardVerify = async (
+export const translucentLizardVerifyId = async (
   name: string,
   cryptSignCypher: CrypLizardCypher & {kind: 'translucent-lizard'},
   fullToken: string
