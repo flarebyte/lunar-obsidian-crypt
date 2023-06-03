@@ -1,0 +1,10 @@
+functionName,bodyWidth,descendantCount,keywords,filename
+checkScope,772,128,private,translucent-lizard.ts
+extractToken,562,87,public expression,token-utils.ts
+extractTokenPrefix,766,123,public expression,token-utils.ts
+safeJwtVerify,1124,105,private expression async,translucent-lizard.ts
+strenghtToAlgorithm,302,30,private expression,translucent-lizard.ts
+succeed,73,21,public expression,railway.ts
+translucentLizardSignId,1230,170,public expression async,translucent-lizard.ts
+translucentLizardVerifyId,2260,289,public expression async,translucent-lizard.ts
+willFail,74,21,public expression,railway.ts
